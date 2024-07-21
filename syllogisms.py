@@ -1,35 +1,4 @@
 from itertools import product
-#Syllogisms
-
-#I should be able to make these automatically given the following tables:
-
-#a Ax(P(x)->Q(x))
-#e ~Ex(P(x)&Q(x))
-#i Ex(P(x)&Q(x))
-#o Ex(P(x)&~Q(x))
-
-#Figure 1: [('M','P'),('S','M'),('S','P')]
-#Figure 2: [('P','M'),('S','M'),('S','P')]
-#Figure 3: [('M','P'),('M','S'),('S','P')]
-#Figure 4: [('P','M'),('M','S'),('S','P')]
-
-#Barbara:
-#Major: Ax(M(x)->P(x))
-#Minor: Ax(S(x)->M(x))
-#Conclusion: Ax(S(x)->P(x))
-
-#Celarent:
-#Major: ~Ex(M(x)&P(x))
-#Minor: Ax(S(x)->M(x))
-#Conclusion: ~Ex(S(x)&P(x))
-
-#Cesare:
-#Major: ~Ex(P(x)&M(x))
-#Minor: Ax(S(x)->M(x))
-#Conclusion: ~Ex(S(x)&P(x))
-
-#I want to be able to show a venn diagram to illustrate the validity or invalidity of any given combination of premises
-#I want to be able to parse shorthand like "AaB", given what A and B stand for, and convert a proof into that form
 
 class Proposition:
     first: str
