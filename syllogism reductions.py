@@ -5,29 +5,13 @@ end_points = ['Barbara', 'Darapti', 'Darii', 'Barbari']
 
 def reduce_syllogism(chain: list):
     syllogism = chain[-1]
-    
-    obverse = syllogism.obverse()
-    if not obverse in chain:
-        chain.append(obverse)
-        return chain
-        
-    converse = syllogism.converse()
-    if not converse in chain:
-        chain.append(converse)
-        return chain
-    
-    major_contraposition, minor_contraposition = syllogism.contrapositions()
-    if not major_contraposition in chain:
-        chain.append(major_contraposition)
-        return chain
-
-    if not minor_contraposition in chain:
-        chain.append(minor_contraposition)
-        return chain
-        
-    else:
-        chain.append(None)
-        return chain
+    for transformation in (Syllogism.obverse, Syllogism.converse, Syllogism.major_contraposition, Syllogism.minor_contraposition):
+        new_syllogism = transformation(syllogism)
+        if not new_syllogism in chain:
+            chain.append(new_syllogism)
+            return chain
+    chain.append(None)
+    return chain
 
 valid_chains = []
 invalid_chains = []
