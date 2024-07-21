@@ -264,6 +264,30 @@ class Syllogism:
 
     def to_predicate_logic(self):
         pass
+    
+    def major_contraposition(self):
+        conclusion = self.conclusion.contradiction()
+
+        major = self.major.contradiction()
+        if major.second in self.minor.terms:
+            major_contraposition = Syllogism(self.minor, conclusion, major)
+        else:
+            assert major.second in conclusion.terms
+            major_contraposition = Syllogism(conclusion, self.minor, major)
+            
+        return major_contraposition
+    
+    def minor_contraposition(self):
+        conclusion = self.conclusion.contradiction()
+
+        minor = self.minor.contradiction()
+        if minor.second in self.major.terms:
+            minor_contraposition = Syllogism(self.major, conclusion, minor)
+        else:
+            assert minor.second in self.conclusion.terms
+            minor_contraposition = Syllogism(conclusion, self.major, minor)
+
+        return minor_contraposition
 
     def contrapositions(self):
         conclusion = self.conclusion.contradiction()
@@ -299,6 +323,6 @@ class Syllogism:
         if self.major.second == self.minor.second:
             major = self.major.contrary()
             minor = self.minor.contrary()
-            return Syllogism(major, minor, conclusion)
+            return Syllogism(major, minor, self.conclusion)
         else:
             return self
