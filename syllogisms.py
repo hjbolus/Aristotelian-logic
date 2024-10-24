@@ -258,9 +258,6 @@ class Syllogism:
                 figure = mood[-1]
                 copulae = list(mood[:-1])
         return Syllogism.from_terms_figure_and_copulae('S', 'M', 'P', figure, copulae)
-    
-    def to_propositional_logic(self):
-        pass
 
     def to_predicate_logic(self):
         pass
