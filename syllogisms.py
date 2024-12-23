@@ -321,5 +321,9 @@ class Syllogism:
             major = self.major.contrary()
             minor = self.minor.contrary()
             return Syllogism(major, minor, self.conclusion)
+        elif self.major.second == self.conclusion.second:
+            major = self.major.contrary()
+            conclusion = self.conclusion.contrary()
+            return Syllogism(major, self.minor, conclusion)
         else:
             return self
