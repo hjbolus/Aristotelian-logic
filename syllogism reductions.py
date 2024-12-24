@@ -2,7 +2,7 @@ from syllogisms import *
 from itertools import product
 import copy
 
-end_points = ['Barbara', 'Darapti', 'Darii', 'Barbari']
+end_points = ['barbara', 'darapti', 'darii', 'barbari']
 
 def reduce_syllogism(syllogism, chain: list):
     for transformation in (Syllogism.obverse, Syllogism.converse, Syllogism.major_contraposition, Syllogism.minor_contraposition):
