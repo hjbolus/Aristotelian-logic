@@ -48,7 +48,7 @@ class Proposition:
             copula = 'a'
         return Proposition(self.first, copula, self.second)
 
-    def subalternate(self):
+    def subaltern(self):
         if self.copula == 'a':
             copula = 'i'
         elif self.copula == 'e':
@@ -69,38 +69,35 @@ class Syllogism:
     figure: str
     mood: str
     lines: list
-    sm:int
-    mp: int
-    sp: int
 
     figure1 = {
-    ('a', 'a', 'a'): 'Barbara',
-    ('e', 'a', 'e'): 'Celarent',
-    ('a', 'i', 'i'): 'Darii',
-    ('e', 'i', 'o'): 'Ferio',
-    ('a', 'a', 'i'): 'Barbari',
-    ('e', 'a', 'o'): 'Celaront'}
+    ('a', 'a', 'a'): 'barbara',
+    ('e', 'a', 'e'): 'celarent',
+    ('a', 'i', 'i'): 'darii',
+    ('e', 'i', 'o'): 'ferio',
+    ('a', 'a', 'i'): 'barbari',
+    ('e', 'a', 'o'): 'celaront'}
     figure2 = {
-    ('e', 'a', 'e'): 'Cesare',
-    ('a', 'e', 'e'): 'Camestres',
-    ('e', 'i', 'o'): 'Festino',
-    ('a', 'o', 'o'): 'Baroco',
-    ('e', 'a', 'o'): 'Cesaro',
-    ('a', 'e', 'o'): 'Camestros'}
+    ('e', 'a', 'e'): 'cesare',
+    ('a', 'e', 'e'): 'camestres',
+    ('e', 'i', 'o'): 'festino',
+    ('a', 'o', 'o'): 'baroco',
+    ('e', 'a', 'o'): 'cesaro',
+    ('a', 'e', 'o'): 'camestros'}
     figure3 = {
-    ('a', 'i', 'i'): 'Datisi',
-    ('i', 'a', 'i'): 'Disamis',
-    ('e', 'i', 'o'): 'Ferison',
-    ('o', 'a', 'o'): 'Bocardo',
-    ('e', 'a', 'o'): 'Felapton',
-    ('a', 'a', 'i'): 'Darapti'}
+    ('a', 'i', 'i'): 'datisi',
+    ('i', 'a', 'i'): 'disamis',
+    ('e', 'i', 'o'): 'ferison',
+    ('o', 'a', 'o'): 'bocardo',
+    ('e', 'a', 'o'): 'felapton',
+    ('a', 'a', 'i'): 'darapti'}
     figure4 = {
-    ('a', 'e', 'e'): 'Calemes',
-    ('i', 'a', 'i'): 'Dimatis',
-    ('e', 'i', 'o'): 'Fresison',
-    ('a', 'e', 'o'): 'Calemos',
-    ('e', 'a', 'o'): 'Fesapo',
-    ('a', 'a', 'i'): 'Bamalip'}
+    ('a', 'e', 'e'): 'calemes',
+    ('i', 'a', 'i'): 'dimatis',
+    ('e', 'i', 'o'): 'fresison',
+    ('a', 'e', 'o'): 'calemos',
+    ('e', 'a', 'o'): 'fesapo',
+    ('a', 'a', 'i'): 'bamalip'}
 
     moods = {'barbara': ('1', ('a', 'a', 'a')),
     'celarent': ('1', ('e', 'a', 'e')),
@@ -137,32 +134,24 @@ class Syllogism:
             self.subject = minor.first
             self.predicate = major.second
             self.middle_term = major.first
-            self.sm = Syllogism.probabilities[minor.copula]
-            self.mp = Syllogism.probabilities[major.copula]
 
         elif major.second == minor.second:
             self.figure = '2'
             self.subject = minor.first
             self.predicate = major.first
             self.middle_term = major.second
-            self.sm = Syllogism.probabilities[minor.copula]
-            self.mp = 0
 
         elif major.first == minor.first:
             self.figure = '3'
             self.subject = minor.second
             self.predicate = major.second
             self.middle_term = major.first
-            self.sm = 0
-            self.mp = Syllogism.probabilities[major.copula]
+
         else:
             self.figure = '4'
             self.subject = minor.second
             self.predicate = major.first
             self.middle_term = major.second
-            self.sm = 0
-            self.mp = 0
-        self.sp = self.sm*self.mp
 
         if conclusion:
             self.conclusion = conclusion
@@ -173,9 +162,9 @@ class Syllogism:
             copula = str(input())
             assert copula in {'a', 'e', 'i', 'o'}, print('invalid copula')
             self.conclusion = Proposition(self.subject, copula, self.predicate)
-        
+
         self.lines = (self.major, self.minor, self.conclusion)
-        
+
         #determine mood
         self.copulae = (self.major.copula, self.minor.copula, self.conclusion.copula)
         if self.figure == '1':
@@ -246,22 +235,27 @@ class Syllogism:
         figure, copulae = Syllogism.moods[mood.lower()]
         return Syllogism.from_terms_figure_and_copulae(subject, middle_term, predicate, figure, copulae)
 
-    def from_mood(mood):
-        if mood.lower() in Syllogism.moods:
-            figure, copulae = Syllogism.moods[mood.lower()]
+    def from_m_and_f(mood_and_figure):
+        if mood_and_figure.lower() in Syllogism.moods:
+            figure, copulae = Syllogism.moods[mood_and_figure.lower()]
         else:
-            assert len(mood) == 4
-            if mood[0].isnumeric():
-                figure = mood[0]
-                copulae = list(mood[1:])
-            elif mood[-1].isnumeric():
-                figure = mood[-1]
-                copulae = list(mood[:-1])
+            assert len(mood_and_figure) == 4
+            if mood_and_figure[0].isnumeric():
+                assert mood_and_figure[1:].isalpha()
+                figure = mood_and_figure[0]
+                copulae = list(mood_and_figure[1:])
+            elif mood_and_figure[-1].isnumeric():
+                assert mood_and_figure[:-1].isalpha()
+                figure = mood_and_figure[-1]
+                copulae = list(mood_and_figure[:-1])
         return Syllogism.from_terms_figure_and_copulae('S', 'M', 'P', figure, copulae)
+
+    def to_propositional_logic(self):
+        pass
 
     def to_predicate_logic(self):
         pass
-    
+
     def major_contraposition(self):
         conclusion = self.conclusion.contradiction()
 
@@ -271,12 +265,13 @@ class Syllogism:
         else:
             assert major.second in conclusion.terms
             major_contraposition = Syllogism(conclusion, self.minor, major)
-            
+
         return major_contraposition
-    
+
     def minor_contraposition(self):
         conclusion = self.conclusion.contradiction()
 
+        #minor_contraposition
         minor = self.minor.contradiction()
         if minor.second in self.major.terms:
             minor_contraposition = Syllogism(self.major, conclusion, minor)
@@ -288,7 +283,7 @@ class Syllogism:
 
     def contrapositions(self):
         conclusion = self.conclusion.contradiction()
-        
+
         #major_contraposition
         major = self.major.contradiction()
         if major.second in self.minor.terms:
@@ -296,7 +291,7 @@ class Syllogism:
         else:
             assert major.second in conclusion.terms
             major_contraposition = Syllogism(conclusion, self.minor, major)
-        
+
         #minor_contraposition
         minor = self.minor.contradiction()
         if minor.second in self.major.terms:
@@ -304,18 +299,27 @@ class Syllogism:
         else:
             assert minor.second in self.conclusion.terms
             minor_contraposition = Syllogism(conclusion, self.major, minor)
-        
+
         return major_contraposition, minor_contraposition
-    
+
     def converse(self):
         new_lines = []
-        for line in self.lines:
+        #premises
+        for line in (self.major, self.minor):
             if line.copula in {'e','i'}:
                 new_lines.append(Proposition(line.second, line.copula, line.first))
             else:
                 new_lines.append(line)
+
+        #conclusion
+        if self.conclusion.copula in {'e', 'i'}:
+            #exchange the premises
+            new_lines = new_lines[::-1]
+            new_lines.append(Proposition(self.conclusion.second, self.conclusion.copula, self.conclusion.first))
+        else:
+            new_lines.append(self.conclusion)
         return Syllogism(*new_lines)
-    
+
     def obverse(self):
         if self.major.second == self.minor.second:
             major = self.major.contrary()
