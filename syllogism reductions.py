@@ -22,8 +22,8 @@ def reduce_syllogism(syllogism, chain: list):
 valid_chains = []
 invalid_chains = []
 for figure in ['1','2','3','4']:
-    for copulae in product(['a','e','i','o'], repeat=3):
-        syllogism =  Syllogism.from_terms_figure_and_copulae('S','M','P', figure, copulae)
+    for quantifiers in product(['a','e','i','o'], repeat=3):
+        syllogism =  Syllogism.from_terms_figure_and_quantifiers('S','M','P', figure, quantifiers)
         if syllogism.mood in end_points:
             result = [(syllogism.mood, True)]
         else:
