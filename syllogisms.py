@@ -4,21 +4,21 @@ class Proposition:
     first: str
     second: str
     terms: tuple
-    copula: str
+    quantifer: str
 
-    def __init__(self, first: str, copula: str, second: str):
+    def __init__(self, first: str, quantifer: str, second: str):
         self.first = first
         self.second = second
         self.terms = (first, second)
-        assert copula in {'a','e', 'i', 'o'}, print(f'Invalid copula "{copula}"')
-        self.copula = copula
+        assert quantifer in {'a','e', 'i', 'o'}, print(f'Invalid quantifer "{quantifer}"')
+        self.quantifer = quantifer
 
     def __repr__(self):
-        if self.copula == 'a':
+        if self.quantifer == 'a':
             return f'Everything that is a(n) {self.first} is a(n) {self.second}'
-        elif self.copula == 'e':
+        elif self.quantifer == 'e':
             return f'Nothing that is a(n) {self.first} is a(n) {self.second}'
-        elif self.copula == 'i':
+        elif self.quantifer == 'i':
             return f'Some things that are a(n) {self.first} are a(n) {self.second}'
         else:
             return f'Not all things that are a(n) {self.first} are a(n) {self.second}'
@@ -27,37 +27,37 @@ class Proposition:
         return isinstance(other, Proposition) and str(self) == str(other)
 
     def contrary(self):
-        if self.copula == 'a':
-            copula = 'e'
-        elif self.copula == 'e':
-            copula = 'a'
-        elif self.copula == 'i':
-            copula = 'o'
+        if self.quantifer == 'a':
+            quantifer = 'e'
+        elif self.quantifer == 'e':
+            quantifer = 'a'
+        elif self.quantifer == 'i':
+            quantifer = 'o'
         else:
-            copula = 'i'
-        return Proposition(self.first, copula, self.second)
+            quantifer = 'i'
+        return Proposition(self.first, quantifer, self.second)
 
     def contradiction(self):
-        if self.copula == 'a':
-            copula = 'o'
-        elif self.copula == 'e':
-            copula = 'i'
-        elif self.copula == 'i':
-            copula = 'e'
+        if self.quantifer == 'a':
+            quantifer = 'o'
+        elif self.quantifer == 'e':
+            quantifer = 'i'
+        elif self.quantifer == 'i':
+            quantifer = 'e'
         else:
-            copula = 'a'
-        return Proposition(self.first, copula, self.second)
+            quantifer = 'a'
+        return Proposition(self.first, quantifer, self.second)
 
     def subaltern(self):
-        if self.copula == 'a':
-            copula = 'i'
-        elif self.copula == 'e':
-            copula = 'o'
-        elif self.copula == 'i':
-            copula = 'a'
+        if self.quantifer == 'a':
+            quantifer = 'i'
+        elif self.quantifer == 'e':
+            quantifer = 'o'
+        elif self.quantifer == 'i':
+            quantifer = 'a'
         else:
-            copula = 'e'
-        return Proposition(self.first, copula, self.second)
+            quantifer = 'e'
+        return Proposition(self.first, quantifer, self.second)
 
 class Syllogism:
     major: Proposition
@@ -157,36 +157,36 @@ class Syllogism:
             self.conclusion = conclusion
         else:
             print('Pick a conclusion from the following:')
-            for copula in ['a', 'e', 'i', 'o']:
-                print(f'{copula}: {Proposition(self.subject, copula, self.predicate)}')
-            copula = str(input())
-            assert copula in {'a', 'e', 'i', 'o'}, print('invalid copula')
-            self.conclusion = Proposition(self.subject, copula, self.predicate)
+            for quantifer in ['a', 'e', 'i', 'o']:
+                print(f'{quantifer}: {Proposition(self.subject, quantifer, self.predicate)}')
+            quantifer = str(input())
+            assert quantifer in {'a', 'e', 'i', 'o'}, print('invalid quantifer')
+            self.conclusion = Proposition(self.subject, quantifer, self.predicate)
 
         self.lines = (self.major, self.minor, self.conclusion)
 
         #determine mood
-        self.copulae = (self.major.copula, self.minor.copula, self.conclusion.copula)
+        self.quantifers = (self.major.quantifer, self.minor.quantifer, self.conclusion.quantifer)
         if self.figure == '1':
-            if self.copulae in Syllogism.figure1:
-                self.mood = Syllogism.figure1[self.copulae]
+            if self.quantifers in Syllogism.figure1:
+                self.mood = Syllogism.figure1[self.quantifers]
             else:
-                self.mood = ''.join([self.figure, *[line.copula for line in self.lines]])
+                self.mood = ''.join([self.figure, *[line.quantifer for line in self.lines]])
         elif self.figure == '2':
-            if self.copulae in Syllogism.figure2:
-                self.mood = Syllogism.figure2[self.copulae]
+            if self.quantifers in Syllogism.figure2:
+                self.mood = Syllogism.figure2[self.quantifers]
             else:
-                self.mood = ''.join([self.figure, *[line.copula for line in self.lines]])
+                self.mood = ''.join([self.figure, *[line.quantifer for line in self.lines]])
         elif self.figure == '3':
-            if self.copulae in Syllogism.figure3:
-                self.mood = Syllogism.figure3[self.copulae]
+            if self.quantifers in Syllogism.figure3:
+                self.mood = Syllogism.figure3[self.quantifers]
             else:
-                self.mood = ''.join([self.figure, *[line.copula for line in self.lines]])
+                self.mood = ''.join([self.figure, *[line.quantifer for line in self.lines]])
         elif self.figure == '4':
-            if self.copulae in Syllogism.figure4:
-                self.mood = Syllogism.figure4[self.copulae]
+            if self.quantifers in Syllogism.figure4:
+                self.mood = Syllogism.figure4[self.quantifers]
             else:
-                self.mood = ''.join([self.figure, *[line.copula for line in self.lines]])
+                self.mood = ''.join([self.figure, *[line.quantifer for line in self.lines]])
 
     def __repr__(self):
         return f"{self.major},\n{self.minor},\n\tTherefore,\n{self.conclusion}."
@@ -208,47 +208,47 @@ class Syllogism:
                 return self.major.first == self.conclusion.second and self.major.second == self.minor.first and self.minor.second == self.conclusion.first
         return False
 
-    def from_terms_figure_and_copulae(subject='S', middle_term='M', predicate='P', figure='1', copulae=('a','a','a')):
+    def from_terms_figure_and_quantifers(subject='S', middle_term='M', predicate='P', figure='1', quantifers=('a','a','a')):
         assert figure in {'1','2','3','4'}
-        assert len(copulae) == 3 and all(i in {'a','e','i','o'} for i in copulae)
+        assert len(quantifers) == 3 and all(i in {'a','e','i','o'} for i in quantifers)
         if figure == '1':
-            major = Proposition(middle_term, copulae[0], predicate)
-            minor = Proposition(subject, copulae[1], middle_term)
+            major = Proposition(middle_term, quantifers[0], predicate)
+            minor = Proposition(subject, quantifers[1], middle_term)
 
         elif figure == '2':
-            major = Proposition(predicate, copulae[0], middle_term)
-            minor = Proposition(subject, copulae[1], middle_term)
+            major = Proposition(predicate, quantifers[0], middle_term)
+            minor = Proposition(subject, quantifers[1], middle_term)
 
         elif figure == '3':
-            major = Proposition(middle_term, copulae[0], predicate)
-            minor = Proposition(middle_term, copulae[1], subject)
+            major = Proposition(middle_term, quantifers[0], predicate)
+            minor = Proposition(middle_term, quantifers[1], subject)
 
         else:
-            major = Proposition(predicate, copulae[0], middle_term)
-            minor = Proposition(middle_term, copulae[1], subject)
+            major = Proposition(predicate, quantifers[0], middle_term)
+            minor = Proposition(middle_term, quantifers[1], subject)
 
-        conclusion = Proposition(subject, copulae[2], predicate)
+        conclusion = Proposition(subject, quantifers[2], predicate)
         return Syllogism(major, minor, conclusion)
 
     def from_terms_and_mood(subject, middle_term, predicate, mood):
         assert mood.lower() in Syllogism.moods
-        figure, copulae = Syllogism.moods[mood.lower()]
-        return Syllogism.from_terms_figure_and_copulae(subject, middle_term, predicate, figure, copulae)
+        figure, quantifers = Syllogism.moods[mood.lower()]
+        return Syllogism.from_terms_figure_and_quantifers(subject, middle_term, predicate, figure, quantifers)
 
     def from_m_and_f(mood_and_figure):
         if mood_and_figure.lower() in Syllogism.moods:
-            figure, copulae = Syllogism.moods[mood_and_figure.lower()]
+            figure, quantifers = Syllogism.moods[mood_and_figure.lower()]
         else:
             assert len(mood_and_figure) == 4
             if mood_and_figure[0].isnumeric():
                 assert mood_and_figure[1:].isalpha()
                 figure = mood_and_figure[0]
-                copulae = list(mood_and_figure[1:])
+                quantifers = list(mood_and_figure[1:])
             elif mood_and_figure[-1].isnumeric():
                 assert mood_and_figure[:-1].isalpha()
                 figure = mood_and_figure[-1]
-                copulae = list(mood_and_figure[:-1])
-        return Syllogism.from_terms_figure_and_copulae('S', 'M', 'P', figure, copulae)
+                quantifers = list(mood_and_figure[:-1])
+        return Syllogism.from_terms_figure_and_quantifers('S', 'M', 'P', figure, quantifers)
 
     def to_propositional_logic(self):
         pass
@@ -306,16 +306,16 @@ class Syllogism:
         new_lines = []
         #premises
         for line in (self.major, self.minor):
-            if line.copula in {'e','i'}:
-                new_lines.append(Proposition(line.second, line.copula, line.first))
+            if line.quantifer in {'e','i'}:
+                new_lines.append(Proposition(line.second, line.quantifer, line.first))
             else:
                 new_lines.append(line)
 
         #conclusion
-        if self.conclusion.copula in {'e', 'i'}:
+        if self.conclusion.quantifer in {'e', 'i'}:
             #exchange the premises
             new_lines = new_lines[::-1]
-            new_lines.append(Proposition(self.conclusion.second, self.conclusion.copula, self.conclusion.first))
+            new_lines.append(Proposition(self.conclusion.second, self.conclusion.quantifer, self.conclusion.first))
         else:
             new_lines.append(self.conclusion)
         return Syllogism(*new_lines)
