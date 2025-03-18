@@ -4,21 +4,21 @@ class Proposition:
     first: str
     second: str
     terms: tuple
-    quantifer: str
+    quantifier: str
 
-    def __init__(self, first: str, quantifer: str, second: str):
+    def __init__(self, first: str, quantifier: str, second: str):
         self.first = first
         self.second = second
         self.terms = (first, second)
-        assert quantifer in {'a','e', 'i', 'o'}, print(f'Invalid quantifer "{quantifer}"')
-        self.quantifer = quantifer
+        assert quantifier in {'a','e', 'i', 'o'}, print(f'Invalid quantifier "{quantifier}"')
+        self.quantifier = quantifier
 
     def __repr__(self):
-        if self.quantifer == 'a':
+        if self.quantifier == 'a':
             return f'Everything that is a(n) {self.first} is a(n) {self.second}'
-        elif self.quantifer == 'e':
+        elif self.quantifier == 'e':
             return f'Nothing that is a(n) {self.first} is a(n) {self.second}'
-        elif self.quantifer == 'i':
+        elif self.quantifier == 'i':
             return f'Some things that are a(n) {self.first} are a(n) {self.second}'
         else:
             return f'Not all things that are a(n) {self.first} are a(n) {self.second}'
@@ -27,37 +27,37 @@ class Proposition:
         return isinstance(other, Proposition) and str(self) == str(other)
 
     def contrary(self):
-        if self.quantifer == 'a':
-            quantifer = 'e'
-        elif self.quantifer == 'e':
-            quantifer = 'a'
-        elif self.quantifer == 'i':
-            quantifer = 'o'
+        if self.quantifier == 'a':
+            quantifier = 'e'
+        elif self.quantifier == 'e':
+            quantifier = 'a'
+        elif self.quantifier == 'i':
+            quantifier = 'o'
         else:
-            quantifer = 'i'
-        return Proposition(self.first, quantifer, self.second)
+            quantifier = 'i'
+        return Proposition(self.first, quantifier, self.second)
 
     def contradiction(self):
-        if self.quantifer == 'a':
-            quantifer = 'o'
-        elif self.quantifer == 'e':
-            quantifer = 'i'
-        elif self.quantifer == 'i':
-            quantifer = 'e'
+        if self.quantifier == 'a':
+            quantifier = 'o'
+        elif self.quantifier == 'e':
+            quantifier = 'i'
+        elif self.quantifier == 'i':
+            quantifier = 'e'
         else:
-            quantifer = 'a'
-        return Proposition(self.first, quantifer, self.second)
+            quantifier = 'a'
+        return Proposition(self.first, quantifier, self.second)
 
     def subaltern(self):
-        if self.quantifer == 'a':
-            quantifer = 'i'
-        elif self.quantifer == 'e':
-            quantifer = 'o'
-        elif self.quantifer == 'i':
-            quantifer = 'a'
+        if self.quantifier == 'a':
+            quantifier = 'i'
+        elif self.quantifier == 'e':
+            quantifier = 'o'
+        elif self.quantifier == 'i':
+            quantifier = 'a'
         else:
-            quantifer = 'e'
-        return Proposition(self.first, quantifer, self.second)
+            quantifier = 'e'
+        return Proposition(self.first, quantifier, self.second)
 
 class Syllogism:
     major: Proposition
@@ -157,36 +157,36 @@ class Syllogism:
             self.conclusion = conclusion
         else:
             print('Pick a conclusion from the following:')
-            for quantifer in ['a', 'e', 'i', 'o']:
-                print(f'{quantifer}: {Proposition(self.subject, quantifer, self.predicate)}')
-            quantifer = str(input())
-            assert quantifer in {'a', 'e', 'i', 'o'}, print('invalid quantifer')
-            self.conclusion = Proposition(self.subject, quantifer, self.predicate)
+            for quantifier in ['a', 'e', 'i', 'o']:
+                print(f'{quantifier}: {Proposition(self.subject, quantifier, self.predicate)}')
+            quantifier = str(input())
+            assert quantifier in {'a', 'e', 'i', 'o'}, print('invalid quantifier')
+            self.conclusion = Proposition(self.subject, quantifier, self.predicate)
 
         self.lines = (self.major, self.minor, self.conclusion)
 
         #determine mood
-        self.quantifers = (self.major.quantifer, self.minor.quantifer, self.conclusion.quantifer)
+        self.quantifiers = (self.major.quantifier, self.minor.quantifier, self.conclusion.quantifier)
         if self.figure == '1':
-            if self.quantifers in Syllogism.figure1:
-                self.mood = Syllogism.figure1[self.quantifers]
+            if self.quantifiers in Syllogism.figure1:
+                self.mood = Syllogism.figure1[self.quantifiers]
             else:
-                self.mood = ''.join([self.figure, *[line.quantifer for line in self.lines]])
+                self.mood = ''.join([self.figure, *[line.quantifier for line in self.lines]])
         elif self.figure == '2':
-            if self.quantifers in Syllogism.figure2:
-                self.mood = Syllogism.figure2[self.quantifers]
+            if self.quantifiers in Syllogism.figure2:
+                self.mood = Syllogism.figure2[self.quantifiers]
             else:
-                self.mood = ''.join([self.figure, *[line.quantifer for line in self.lines]])
+                self.mood = ''.join([self.figure, *[line.quantifier for line in self.lines]])
         elif self.figure == '3':
-            if self.quantifers in Syllogism.figure3:
-                self.mood = Syllogism.figure3[self.quantifers]
+            if self.quantifiers in Syllogism.figure3:
+                self.mood = Syllogism.figure3[self.quantifiers]
             else:
-                self.mood = ''.join([self.figure, *[line.quantifer for line in self.lines]])
+                self.mood = ''.join([self.figure, *[line.quantifier for line in self.lines]])
         elif self.figure == '4':
-            if self.quantifers in Syllogism.figure4:
-                self.mood = Syllogism.figure4[self.quantifers]
+            if self.quantifiers in Syllogism.figure4:
+                self.mood = Syllogism.figure4[self.quantifiers]
             else:
-                self.mood = ''.join([self.figure, *[line.quantifer for line in self.lines]])
+                self.mood = ''.join([self.figure, *[line.quantifier for line in self.lines]])
 
     def __repr__(self):
         return f"{self.major},\n{self.minor},\n\tTherefore,\n{self.conclusion}."
@@ -208,47 +208,47 @@ class Syllogism:
                 return self.major.first == self.conclusion.second and self.major.second == self.minor.first and self.minor.second == self.conclusion.first
         return False
 
-    def from_terms_figure_and_quantifers(subject='S', middle_term='M', predicate='P', figure='1', quantifers=('a','a','a')):
+    def from_terms_figure_and_quantifiers(subject='S', middle_term='M', predicate='P', figure='1', quantifiers=('a','a','a')):
         assert figure in {'1','2','3','4'}
-        assert len(quantifers) == 3 and all(i in {'a','e','i','o'} for i in quantifers)
+        assert len(quantifiers) == 3 and all(i in {'a','e','i','o'} for i in quantifiers)
         if figure == '1':
-            major = Proposition(middle_term, quantifers[0], predicate)
-            minor = Proposition(subject, quantifers[1], middle_term)
+            major = Proposition(middle_term, quantifiers[0], predicate)
+            minor = Proposition(subject, quantifiers[1], middle_term)
 
         elif figure == '2':
-            major = Proposition(predicate, quantifers[0], middle_term)
-            minor = Proposition(subject, quantifers[1], middle_term)
+            major = Proposition(predicate, quantifiers[0], middle_term)
+            minor = Proposition(subject, quantifiers[1], middle_term)
 
         elif figure == '3':
-            major = Proposition(middle_term, quantifers[0], predicate)
-            minor = Proposition(middle_term, quantifers[1], subject)
+            major = Proposition(middle_term, quantifiers[0], predicate)
+            minor = Proposition(middle_term, quantifiers[1], subject)
 
         else:
-            major = Proposition(predicate, quantifers[0], middle_term)
-            minor = Proposition(middle_term, quantifers[1], subject)
+            major = Proposition(predicate, quantifiers[0], middle_term)
+            minor = Proposition(middle_term, quantifiers[1], subject)
 
-        conclusion = Proposition(subject, quantifers[2], predicate)
+        conclusion = Proposition(subject, quantifiers[2], predicate)
         return Syllogism(major, minor, conclusion)
 
     def from_terms_and_mood(subject, middle_term, predicate, mood):
         assert mood.lower() in Syllogism.moods
-        figure, quantifers = Syllogism.moods[mood.lower()]
-        return Syllogism.from_terms_figure_and_quantifers(subject, middle_term, predicate, figure, quantifers)
+        figure, quantifiers = Syllogism.moods[mood.lower()]
+        return Syllogism.from_terms_figure_and_quantifiers(subject, middle_term, predicate, figure, quantifiers)
 
     def from_m_and_f(mood_and_figure):
         if mood_and_figure.lower() in Syllogism.moods:
-            figure, quantifers = Syllogism.moods[mood_and_figure.lower()]
+            figure, quantifiers = Syllogism.moods[mood_and_figure.lower()]
         else:
             assert len(mood_and_figure) == 4
             if mood_and_figure[0].isnumeric():
                 assert mood_and_figure[1:].isalpha()
                 figure = mood_and_figure[0]
-                quantifers = list(mood_and_figure[1:])
+                quantifiers = list(mood_and_figure[1:])
             elif mood_and_figure[-1].isnumeric():
                 assert mood_and_figure[:-1].isalpha()
                 figure = mood_and_figure[-1]
-                quantifers = list(mood_and_figure[:-1])
-        return Syllogism.from_terms_figure_and_quantifers('S', 'M', 'P', figure, quantifers)
+                quantifiers = list(mood_and_figure[:-1])
+        return Syllogism.from_terms_figure_and_quantifiers('S', 'M', 'P', figure, quantifiers)
 
     def to_propositional_logic(self):
         pass
@@ -306,16 +306,16 @@ class Syllogism:
         new_lines = []
         #premises
         for line in (self.major, self.minor):
-            if line.quantifer in {'e','i'}:
-                new_lines.append(Proposition(line.second, line.quantifer, line.first))
+            if line.quantifier in {'e','i'}:
+                new_lines.append(Proposition(line.second, line.quantifier, line.first))
             else:
                 new_lines.append(line)
 
         #conclusion
-        if self.conclusion.quantifer in {'e', 'i'}:
+        if self.conclusion.quantifier in {'e', 'i'}:
             #exchange the premises
             new_lines = new_lines[::-1]
-            new_lines.append(Proposition(self.conclusion.second, self.conclusion.quantifer, self.conclusion.first))
+            new_lines.append(Proposition(self.conclusion.second, self.conclusion.quantifier, self.conclusion.first))
         else:
             new_lines.append(self.conclusion)
         return Syllogism(*new_lines)
