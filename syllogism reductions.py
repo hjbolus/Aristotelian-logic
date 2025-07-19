@@ -4,8 +4,16 @@ import copy
 
 end_points = ['barbara', 'darapti', 'darii', 'barbari']
 
-def reduce_syllogism(syllogism, chain: list):
-    for transformation in (Syllogism.obverse, Syllogism.converse, Syllogism.major_contraposition, Syllogism.minor_contraposition):
+def reduce_syllogism(syllogism, chain: list, end_points: list):
+    # Given a syllogism `syllogism`, an initially-empty list `chain`, and a list of Aristotelian moods `end_points`, 
+    # applies syllogistic transformations and records the result in the given list without repeating a given
+    # operation on a given syllogism. Terminates if the mood of the resulting syllogism is in `end_points` or if
+    # there are no remaining combinations of syllogisms and transformations to check.
+
+    for transformation in (Syllogism.obverse, 
+                           Syllogism.converse, 
+                           Syllogism.major_contraposition, 
+                           Syllogism.minor_contraposition):
         if not (syllogism.mood, transformation) in chain:
             chain.append((syllogism.mood, transformation))
             new_syllogism = transformation(syllogism)
@@ -28,7 +36,7 @@ if __name__ == "__main__":
             if syllogism.mood in end_points:
                 result = [(syllogism.mood, True)]
             else:
-                result = reduce_syllogism(syllogism, [])
+                result = reduce_syllogism(syllogism, [], end_points)
             if result[-1][1] == True:
                 valid_chains.append([i[0] for i in result])
             else:
