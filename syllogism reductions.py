@@ -18,22 +18,23 @@ def reduce_syllogism(syllogism, chain: list):
                 if chain[-1][1] == True:
                     return chain
     return chain
-    
-valid_chains = []
-invalid_chains = []
-for figure in ['1','2','3','4']:
-    for quantifiers in product(['a','e','i','o'], repeat=3):
-        syllogism =  Syllogism.from_terms_figure_and_quantifiers('S','M','P', figure, quantifiers)
-        if syllogism.mood in end_points:
-            result = [(syllogism.mood, True)]
-        else:
-            result = reduce_syllogism(syllogism, [])
-        if result[-1][1] == True:
-            valid_chains.append([i[0] for i in result])
-        else:
-            result[-1] = (result[-1][0], False)
-            invalid_chains.append([i[0] for i in result])
-        print(syllogism.mood, result[-1][1])
+
+if __name__ == "__main__":
+    valid_chains = []
+    invalid_chains = []
+    for figure in ['1','2','3','4']:
+        for quantifiers in product(['a','e','i','o'], repeat=3):
+            syllogism =  Syllogism.from_terms_figure_and_quantifiers('S','M','P', figure, quantifiers)
+            if syllogism.mood in end_points:
+                result = [(syllogism.mood, True)]
+            else:
+                result = reduce_syllogism(syllogism, [])
+            if result[-1][1] == True:
+                valid_chains.append([i[0] for i in result])
+            else:
+                result[-1] = (result[-1][0], False)
+                invalid_chains.append([i[0] for i in result])
+            print(syllogism.mood, result[-1][1])
 
 # ['barbara']
 # ['barbari']
