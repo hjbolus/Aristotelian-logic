@@ -22,7 +22,7 @@ def reduce_syllogism(syllogism, chain: list, end_points: list):
                 chain.append((new_syllogism.mood, True))
                 return chain
             else:
-                chain = reduce_syllogism(new_syllogism, chain)
+                chain = reduce_syllogism(new_syllogism, chain, end_points)
                 if chain[-1][1] == True:
                     return chain
     return chain
